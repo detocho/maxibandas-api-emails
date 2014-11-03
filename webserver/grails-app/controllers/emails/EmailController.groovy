@@ -21,18 +21,22 @@ class EmailController {
 
         setHeaders()
 
-        //try{
+        try{
 
             result = emailService.send(request.JSON)
-        sendMail {
-            to "davidpazgtz764@gmail.com"
-            subject "hola aqui enviando un email de test"
-            body "hola"
-        }
+
+            sendMail {
+                to result.to
+                from result.from
+                subject result.subject
+                html result.html
+            }
             response.setStatus(HttpServletResponse.SC_CREATED)
 
-            render result as GSON
-/*
+            def answer = [:]
+            answer.message = 'Tu email se envio correctamente'
+            render answer as GSON
+
         }catch(BadRequestException e){
 
             renderException(e)
@@ -41,7 +45,7 @@ class EmailController {
 
             renderException(e)
         }
- */
+
     }
 
 

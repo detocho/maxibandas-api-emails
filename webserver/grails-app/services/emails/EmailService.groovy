@@ -57,20 +57,15 @@ class EmailService {
 
         templateProcess.body = templateProcess.body.replace("<<nombre>>", nameFrom)
 
-        String sendTo = to
-        String sendSubject = templateProcess.subject
-        String sendHtml = templateProcess.body
-
-        println "el mail a enviar es"+sendTo
-        println "El subject es"+sendSubject
-        println "el cuerpo es"+sendHtml
+        String sendTo       = to
+        String sendSubject  = templateProcess.subject
+        String sendHtml     = templateProcess.body
 
 
-        //TODO regresamos todos los datos que debemos enviar desde el servicio y hacemos el envio desde
-        // el controller
-
-
-        jsonResult.message = "Mensaje enviado correctamente"
+        jsonResult.to       = sendTo
+        jsonResult.from     = emailFrom
+        jsonResult.subject  = sendSubject
+        jsonResult.html     = sendHtml
 
         jsonResult
     }
