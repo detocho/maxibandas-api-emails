@@ -19,6 +19,8 @@ import emails.exceptions.BadRequestException
 
 class EmailService {
 
+    //static transactional = 'mongo'
+    def validAccess = new ValidAccess()
 
     def restService
 
@@ -31,16 +33,24 @@ class EmailService {
             rec_pass    :"recPass"
     ]
 
-    def send(def jsonEmail){
+    def send(def params,def jsonEmail){
 
         def jsonResult = [:]
+
+        if (!params.access_token){
+
+            throw new BadRequestException("You must provider access_token")
+        }
+
+        def access_token    = validAccess.validAccessToken(params.access_token)
+        def user_id         = params.access_token.split('_')[2]
 
         def to          = jsonEmail?.to
         def message     = jsonEmail?.message
         def template    = jsonEmail?.template
         def senderId    = jsonEmail?.sender_id
 
-        //TODO como validamos el email de accceso ?
+        //TODO debemos de guardar en alguna bitacora los mensajes que se envian
 
 
         def result = restService.getResource("/users/${senderId}")
@@ -94,7 +104,7 @@ class EmailService {
 
             case "newUser":
                 subject = "Bienvenido a maxibandas"
-                body    = "<div>Hola <<nombre>>, Bienvenido a maxibandas completa tu registro...</div>"
+                body    = "<div style='background-color:#EEE;'>Hola <b> <<nombre>>  </b>, Bienvenido a maxibandas completa tu registro...</div>"
 
                 break
 
@@ -130,4 +140,9 @@ class EmailService {
 
         template
     }
+
+    //TODO veremos donde podemos guardar la plantillas 
+
+
+
 }

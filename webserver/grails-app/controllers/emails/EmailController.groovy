@@ -23,7 +23,7 @@ class EmailController {
 
         try{
 
-            result = emailService.send(request.JSON)
+            result = emailService.send(params, request.JSON)
 
             sendMail {
                 to result.to
@@ -34,7 +34,7 @@ class EmailController {
             response.setStatus(HttpServletResponse.SC_CREATED)
 
             def answer = [:]
-            answer.message = 'Tu email se envio correctamente'
+            answer.message = 'The email send'
             render answer as GSON
 
         }catch(BadRequestException e){
@@ -56,7 +56,7 @@ class EmailController {
         setHeaders()
 
         def mapResult = [
-                message: "Method $method not allowed",
+                message: "Method "+method+" not allowed",
                 status: HttpServletResponse.SC_METHOD_NOT_ALLOWED,
                 error:"not_allowed"
         ]
