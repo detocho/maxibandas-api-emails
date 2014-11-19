@@ -35,14 +35,14 @@ class EmailController {
 
             def answer = [:]
             answer.message = 'The email send'
+
             render answer as GSON
 
         }catch(BadRequestException e){
-
             renderException(e)
-
+        }catch(ConflictException e){
+            renderException(e)
         }catch(Exception e){
-
             renderException(e)
         }
 

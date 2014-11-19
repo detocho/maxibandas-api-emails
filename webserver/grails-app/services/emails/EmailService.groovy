@@ -19,19 +19,22 @@ import emails.exceptions.BadRequestException
 
 class EmailService {
 
-    //static transactional = 'mongo'
+    def grailsApplication = new DefaultGrailsApplication()
     def validAccess = new ValidAccess()
+    def emailFrom = grailsApplication.config.emailFrom
 
     def restService
 
     def TEMPLATE_MAP = [
 
-            new_user    :"newUser",
-            new_band    :"newBand",
-            contact     :"contact",
-            expiration  :"expiration",
-            rec_pass    :"recPass"
+            new_user            :"newUser",
+            new_band            :"newBand",
+            contact             :"contact",
+            expiration_service  :"expirationService",
+            recovery_password   :"recPass",
+            end_services        :"endService"
     ]
+
 
     def send(def params,def jsonEmail){
 
@@ -43,33 +46,24 @@ class EmailService {
         }
 
         def access_token    = validAccess.validAccessToken(params.access_token)
-        def user_id         = params.access_token.split('_')[2]
+        def userId          = params.access_token.split('_')[2]
 
-        def to          = jsonEmail?.to
-        def message     = jsonEmail?.message
+
         def template    = jsonEmail?.template
-        def senderId    = jsonEmail?.sender_id
 
-        //TODO debemos de guardar en alguna bitacora los mensajes que se envian
-
-
-        def result = restService.getResource("/users/${senderId}")
-
-        if (result.status != HttpServletResponse.SC_OK)
-        {
-            throw new BadRequestException("The sender_id is not valid")
+        if (!template){
+            throw new BadRequestException("You must provider template property")
         }
 
-        def emailFrom   = result.data.email
-        def nameFrom    = result.data.name
 
-        def templateProcess = searchTemplate(template)
+        def templateProcess = getTemplate(searchTemplate(template), jsonEmail, userId)
 
-        templateProcess.body = templateProcess.body.replace("<<nombre>>", nameFrom)
 
-        String sendTo       = to
+
+        String sendTo       = templateProcess.to
         String sendSubject  = templateProcess.subject
         String sendHtml     = templateProcess.body
+        String emailFrom    = templateProcess.email_from
 
 
         jsonResult.to       = sendTo
@@ -78,6 +72,60 @@ class EmailService {
         jsonResult.html     = sendHtml
 
         jsonResult
+    }
+
+
+    def searchUser (def senderId){
+
+        def result = restService.getResource("/users/${senderId}")
+
+        if (result.status != HttpServletResponse.SC_OK)
+        {
+            throw new BadRequestException("The sender_id is not valid")
+        }
+
+        Map userResult = [:]
+
+        userResult.name_from    = result.data.name
+        userResult.email_from   = result.data.email
+
+        userResult
+    }
+
+    def searchBand(def bandId){
+
+        def result = restService.getResource("/bands/${bandId}")
+
+        if (result.status != HttpServletResponse.SC_OK)
+        {
+            throw new BadRequestException("The sender_id is not valid")
+        }
+
+        Map bandResult = [:]
+
+        bandResult.user_id  = result.data.user_id
+        bandResult.status   = result.data.status
+        bandResult.title    = result.data.title
+
+        bandResult
+    }
+
+    def searchUserByEmail (def email){
+
+        def result = restService.getResource("/users/searchByEmail/${email}")
+
+        if (result.status != HttpServletResponse.SC_OK)
+        {
+            throw new BadRequestException("The sender_id is not valid")
+        }
+
+        Map userResult = [:]
+
+        userResult.user_id      = result.data.user_id
+        userResult.status       = result.data.status
+        userResult.name_from    = result.data.name
+
+        userResult
     }
 
     def searchTemplate(def templateId){
@@ -89,59 +137,226 @@ class EmailService {
             throw new NotFoundException("The template not found")
         }
 
-        getTemplate(keyTemplate)
+        keyTemplate
 
     }
 
-    def getTemplate(def keyTemplate){
+    def getTemplate(def keyTemplate,  def jsonEmail, def userId){
 
         def template = [:]
 
         def subject
         def body
 
+        def from        = jsonEmail?.from
+        def to          = jsonEmail?.to
+        def message     = jsonEmail?.message
+        def senderId    = jsonEmail?.sender_id
+        def bandId      = jsonEmail?.band_id
+
+
         switch (keyTemplate) {
 
             case "newUser":
-                subject = "Bienvenido a maxibandas"
-                body    = "<div style='background-color:#EEE;'>Hola <b> <<nombre>>  </b>, Bienvenido a maxibandas completa tu registro...</div>"
+
+                if (!senderId){
+                    throw new BadRequestException("You must provider the sender_id")
+                }
+
+                def user = searchUser(senderId)
+
+                subject = grailsApplication.config.newUser.subject
+                body    = grailsApplication.config.newUser.body
+                body    = body.replace("<<--name-->>", user.name_from)
+
+                template.to         = user.email_from
+                template.subject    = subject
+                template.body       = body
+                template.message    = ""
+                template.email_from = emailFrom
 
                 break
 
             case "newBand":
-                subject = "Felicidades tu banda se público"
-                body    = "<div>Hola <<nombre>>, Tu banda quedo publicada</div>"
+
+                if (!bandId) {
+                    throw new BadRequestException("You must provider the band_id")
+                }
+
+
+                def band = searchBand(bandId)
+
+                if (band.status != 'active'){
+                    throw new ConflictException("The band_id = "+bandId+" not active")
+                }
+                senderId = band.user_id
+
+                if (!senderId){
+                    throw new BadRequestException("You must provider the sender_id")
+                }
+
+                def user = searchUser(senderId)
+
+                subject = grailsApplication.config.newBand.subject
+                body    = grailsApplication.config.newBand.body
+                body    = body.replace("<<--title-->>", band.title)
+
+                template.to         = user.email_from
+                template.subject    = subject
+                template.body       = body
+                template.message    = ""
+                template.email_from = emailFrom
 
                 break
 
             case "contact":
-                subject = "Tu banda fue contactada"
-                body    = "<div>Hola <<nombre>>, Tu banda fue contactada</div>"
+
+                if (!from){
+                    throw new BadRequestException("You must provider the from_email param")
+                }
+
+                if (!message){
+                    throw new BadRequestException("You must proveder the message param")
+                }
+
+                if (!bandId) {
+                    throw new BadRequestException("You must provider the band_id")
+                }
+
+
+                def band = searchBand(bandId)
+
+                if (band.status != 'active'){
+                    throw new ConflictException("The band_id = "+bandId+" not active")
+                }
+                senderId = band.user_id
+
+
+                if (!senderId){
+                    throw new BadRequestException("You must provider the sender_id")
+                }
+
+                def user = searchUser(senderId)
+
+
+                subject = grailsApplication.config.contact.subject
+                body    = grailsApplication.config.contact.body
+
+
+                body    = body.replace("<<--name-->>", user.name_from)
+                body    = body.replace("<<--email-->>", user.email_from)
+                body    = body.replace("<<--title-->>", band.title)
+                body    = body.replace("<<--message-->>",message)
+
+
+                template.to         = user.email_from
+                template.subject    = subject
+                template.body       = body
+                template.message    = ""
+                template.email_from = from
 
                 break
 
-            case "expiration":
-                subject = "Renueva tu anuncio"
-                body    = "<div>Hola <<nombre>>, tu anuncio esta a punto de expirar, no dejes que se pierda y renueva</div>"
+            case "expirationService":
+
+                if (!bandId) {
+                    throw new BadRequestException("You must provider the band_id")
+                }
+
+
+                def band = searchBand(bandId)
+
+                if (band.status != 'active'){
+                    throw new ConflictException("The band_id = "+bandId+" not active")
+                }
+                senderId = band.user_id
+
+                if (!senderId){
+                    throw new BadRequestException("You must provider the sender_id")
+                }
+
+                def user = searchUser(senderId)
+
+                subject = grailsApplication.config.expirationService.subject
+                body    = grailsApplication.config.expirationService.body
+
+                body    = body.replace("<<--name-->>", user.name_from)
+                body    = body.replace("<<--title-->>", band.title)
+
+                template.to         = user.email_from
+                template.subject    = subject
+                template.body       = body
+                template.message    = ""
+                template.email_from = emailFrom
 
                 break
 
-            case "rec_pass":
-                subject = "Recuperacion de password"
-                body    = "<div>Hola <<nombre>>, para recuperar tu password haz lo siguiente</div>"
+            case "recPass":
+
+                if (!from){
+                    throw new BadRequestException("You must provider de from (email recovery password)")
+                }
+
+                def user = searchUserByEmail(from)
+
+                if (!user.user_id){
+                    throw new NotFoundException("The user_id = "+user.user_id+" not found")
+                }
+
+                subject = grailsApplication.config.recPass.subject
+                body    = grailsApplication.config.recPass.body
+                body    = body.replace("<<--name-->>", user.name_from)
+
+                template.to         = from
+                template.subject    = subject
+                template.body       = body
+                template.message    = ""
+                template.email_from = emailFrom
 
                 break
+
+            case "endService":
+
+                if (!bandId) {
+                    throw new BadRequestException("You must provider the band_id")
+                }
+
+
+                def band = searchBand(bandId)
+
+                if (band.status == 'active'){
+                    throw new ConflictException("The band_id = "+bandId+" is active")
+                }
+                senderId = band.user_id
+
+                if (!senderId){
+                    throw new BadRequestException("You must provider the sender_id")
+                }
+
+                def user = searchUser(senderId)
+                subject = grailsApplication.config.endService.subject
+                body    = grailsApplication.config.endService.body
+
+                body    = body.replace("<<--name-->>", user.name_from)
+                body    = body.replace("<<--title-->>", band.title)
+
+                template.to         = user.email_from
+                template.subject    = subject
+                template.body       = body
+                template.message    = ""
+                template.email_from = emailFrom
+
+                break
+
+            default:
+                throw new BadRequestException("The property template is not valid")
 
         }
-
-        template.subject    = subject
-        template.body       = body
-        template.message    = ""
 
         template
     }
 
-    //TODO veremos donde podemos guardar la plantillas 
+
 
 
 

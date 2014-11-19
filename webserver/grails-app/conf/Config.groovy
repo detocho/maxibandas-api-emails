@@ -85,6 +85,159 @@ environments {
     }
 }
 
+// templates  para loe emails
+
+emailFrom = "noreplay.maxibandas@gmail.com"
+
+newUser.subject = "Maxibandas:Bienvenido"
+newUser.body    = "<div style='border:1px solid #e1e1e1;  width: 700px; height:auto;'>\n" +
+        "\t\t<div style='height: 40px; background-color:#322117;background-image:-webkit-linear-gradient(top, #322117, #322117); \n" +
+        "\t\tfont-family: Tahoma, Arial; color:#FFF; font-size: 30px; font-weight: bold;\n" +
+        "\t\tpadding-left: 10px; padding-top: 5px;' >\n" +
+        "\t\t\tmaxibandas\n" +
+        "\t\t</div>\n" +
+        "\t\t<div style=' font-family: Arial; font-size: 12px; padding: 10px; '>\n" +
+        "\t\t\t<p style='font-family: Arial;font-size: 20px;font-weight: bold;width: auto;color: #DF6810;\n" +
+        "\t\t\tmargin-left: 15px;'>\n" +
+        "\t\t\t\tBienvenido <<--name-->> </p>\n" +
+        "\t\t\t<p>\n" +
+        "\t\t\t\tUna vez activada tu cuenta estara todo listo para que puedas comenzar a difrutar de los beneficios \n" +
+        "        \t\t\t\tque <a   style='color:#2a2a2a;'href='http://www.maxibandas.com.mx'>maxibandas.com.mx</a> tiene para ti.<br><br><br>\n" +
+        "        \t\tPara activar tu cuenta da <a  style='color:#DF6810; font-size: 13px;' href=''>clik aqui [ACTIVAR CUENTA]</a>  \n" +
+        "\t\t\t</p>\n" +
+        "\t\t </div>\n" +
+        "\t\t<div style='height:30px; border-top:1px solid #E4E4E4; background: #E4E4E4; text-align: center;\n" +
+        "\t\tfont-family: Arial; font-size: 10px; color:#555; '>\n" +
+        "\t\t\t<a style='color:#DF6810;' href=''>www.maxibandas.com.mx</a> <br> Todos los derechos reservados\n" +
+        "\t\t</div>\t\t\n" +
+        "\t</div>"
+
+newBand.subject = "Maxibandas: Felicidades tu banda se público"
+newBand.body    = "<div style=\"border:1px solid #e1e1e1;  width: 700px; height:auto;\">\n" +
+        "\t\t<div style=\"height: 40px; background-color:#322117;background-image:-webkit-linear-gradient(top, #322117, #322117); \n" +
+        "\t\tfont-family: Tahoma, Arial; color:#FFF; font-size: 30px; font-weight: bold;\n" +
+        "\t\tpadding-left: 10px; padding-top: 5px;\" >\n" +
+        "\t\t\tmaxibandas\n" +
+        "\t\t</div>\n" +
+        "\t\t<div style=\" font-family: Arial; font-size: 12px; padding: 10px; \">\n" +
+        "\t\t\t<p style=\"font-family: Arial;font-size: 20px;font-weight: bold;width: auto;color: #DF6810;\n" +
+        "\t\t\tmargin-left: 15px;\">\n" +
+        "\t\t\t\tHola, <<--title-->> </p>\n" +
+        "\t\t\t<p>\n" +
+        "\t\t\t\tTu banda quedo registrada y publicada en \n" +
+        "        \t\t\t\t <a   style=\"color:#2a2a2a;\"href=\"http://www.maxibandas.com.mx\">maxibandas.com.mx</a>  <br><br><br>\n" +
+        "        \t\tPara ver tu publicación <a  style=\"color:#DF6810; font-size: 13px;\" href=\"\">clik aqui <<--title-->></a>  \n" +
+        "\t\t\t</p>\n" +
+        "\t\t </div>\n" +
+        "\t\t<div style=\"height:30px; border-top:1px solid #E4E4E4; background: #E4E4E4; text-align: center;\n" +
+        "\t\tfont-family: Arial; font-size: 10px; color:#555; \">\n" +
+        "\t\t\t<a style=\"color:#DF6810;\" href=\"\">www.maxibandas.com.mx</a> <br> Todos los derechos reservados\n" +
+        "\t\t</div>\t\t\n" +
+        "\t</div>"
+
+contact.subject = "Maxibandas: Preguntaron por tu banda"
+contact.body    = "<div style=\"border:1px solid #e1e1e1;  width: 700px; height:auto;\">\n" +
+        "\t\t<div style=\"height: 40px; background-color:#322117;background-image:-webkit-linear-gradient(top, #322117, #322117); \n" +
+        "\t\tfont-family: Tahoma, Arial; color:#FFF; font-size: 30px; font-weight: bold;\n" +
+        "\t\tpadding-left: 10px; padding-top: 5px;\" >\n" +
+        "\t\t\tmaxibandas\n" +
+        "\t\t</div>\n" +
+        "\t\t<div style=\" font-family: Arial; font-size: 12px; padding: 10px; \">\n" +
+        "\t\t\t<p style=\"font-family: Arial;font-size: 20px;font-weight: bold;width: auto;color: #DF6810;\n" +
+        "\t\t\tmargin-left: 15px;\">\n" +
+        "\t\t\t\tHola, <<--name-->> </p>\n" +
+        "\t\t\t<p>\n" +
+        "\t\t\t\tContacataron a tu banda <a   style=\"color:#2a2a2a;\"href=\"http://www.maxibandas.com.mx\"><<--title-->></a> con los siguientes datos: <br>\n" +
+        "\n" +
+        "\t\t\t\t<ul>\n" +
+        "\t\t\t\t\t<li>Email:<<--email-->></li>\n" +
+        "\t\t\t\t\t<li>Telefono:<<--telefono-->></li>\n" +
+        "\t\t\t\t\t<li>Message:<<--message-->></li>\n" +
+        "\t\t\t\t</ul>\n" +
+        " \n" +
+        "\t\t\t</p>\n" +
+        "\t\t </div>\n" +
+        "\t\t<div style=\"height:30px; border-top:1px solid #E4E4E4; background: #E4E4E4; text-align: center;\n" +
+        "\t\tfont-family: Arial; font-size: 10px; color:#555; \">\n" +
+        "\t\t\t<a style=\"color:#DF6810;\" href=\"\">www.maxibandas.com.mx</a> <br> Todos los derechos reservados\n" +
+        "\t\t</div>\t\t\n" +
+        "\t</div>"
+
+expirationService.subject   = "Maxibandas: Renueva tu anuncio"
+expirationService.body      = "<div style=\"border:1px solid #e1e1e1;  width: 700px; height:auto;\">\n" +
+        "\t\t<div style=\"height: 40px; background-color:#322117;background-image:-webkit-linear-gradient(top, #322117, #322117); \n" +
+        "\t\tfont-family: Tahoma, Arial; color:#FFF; font-size: 30px; font-weight: bold;\n" +
+        "\t\tpadding-left: 10px; padding-top: 5px;\" >\n" +
+        "\t\t\tmaxibandas\n" +
+        "\t\t</div>\n" +
+        "\t\t<div style=\" font-family: Arial; font-size: 12px; padding: 10px; \">\n" +
+        "\t\t\t<p style=\"font-family: Arial;font-size: 20px;font-weight: bold;width: auto;color: #DF6810;\n" +
+        "\t\t\tmargin-left: 15px;\">\n" +
+        "\t\t\t\tHola, <<--name-->> </p>\n" +
+        "\t\t\t<p>\n" +
+        "\t\t\t\tTe avisamos que tu anuncio  <a   style=\"color:#2a2a2a;\"href=\"http://www.maxibandas.com.mx\"><<--title-->></a> esta proximo a expirar. <br>\n" +
+        "\n" +
+        "\t\t\t\tPara renovar <a   style=\"color:#2a2a2a;\"href=\"http://www.maxibandas.com.mx\">da click aqui</a> \n" +
+        " \n" +
+        "\t\t\t</p>\n" +
+        "\t\t </div>\n" +
+        "\t\t<div style=\"height:30px; border-top:1px solid #E4E4E4; background: #E4E4E4; text-align: center;\n" +
+        "\t\tfont-family: Arial; font-size: 10px; color:#555; \">\n" +
+        "\t\t\t<a style=\"color:#DF6810;\" href=\"\">www.maxibandas.com.mx</a> <br> Todos los derechos reservados\n" +
+        "\t\t</div>\t\t\n" +
+        "\t</div>"
+
+recPass.subject = "Maxibandas : Recuperación de password"
+recPass.body    = "<div style=\"border:1px solid #e1e1e1;  width: 700px; height:auto;\">\n" +
+        "\t\t<div style=\"height: 40px; background-color:#322117;background-image:-webkit-linear-gradient(top, #322117, #322117); \n" +
+        "\t\tfont-family: Tahoma, Arial; color:#FFF; font-size: 30px; font-weight: bold;\n" +
+        "\t\tpadding-left: 10px; padding-top: 5px;\" >\n" +
+        "\t\t\tmaxibandas\n" +
+        "\t\t</div>\n" +
+        "\t\t<div style=\" font-family: Arial; font-size: 12px; padding: 10px; \">\n" +
+        "\t\t\t<p style=\"font-family: Arial;font-size: 20px;font-weight: bold;width: auto;color: #DF6810;\n" +
+        "\t\t\tmargin-left: 15px;\">\n" +
+        "\t\t\t\tHola, <<--name-->> </p>\n" +
+        "\t\t\t<p>\n" +
+        "\t\t\t\tHaz elegido recuperar tu password. <br>\n" +
+        "\n" +
+        "\t\t\t\tPara recuperar tu password  <a   style=\"color:#2a2a2a;\"href=\"http://www.maxibandas.com.mx\">sigue aqui las instrucciones</a> \n" +
+        " \n" +
+        "\t\t\t</p>\n" +
+        "\t\t </div>\n" +
+        "\t\t<div style=\"height:30px; border-top:1px solid #E4E4E4; background: #E4E4E4; text-align: center;\n" +
+        "\t\tfont-family: Arial; font-size: 10px; color:#555; \">\n" +
+        "\t\t\t<a style=\"color:#DF6810;\" href=\"\">www.maxibandas.com.mx</a> <br> Todos los derechos reservados\n" +
+        "\t\t</div>\t\t\n" +
+        "\t</div>"
+
+endService.subject  = "Maxibandas: Tu banda se dio de baja"
+endService.body     = "<div style=\"border:1px solid #e1e1e1;  width: 700px; height:auto;\">\n" +
+        "\t\t<div style=\"height: 40px; background-color:#322117;background-image:-webkit-linear-gradient(top, #322117, #322117); \n" +
+        "\t\tfont-family: Tahoma, Arial; color:#FFF; font-size: 30px; font-weight: bold;\n" +
+        "\t\tpadding-left: 10px; padding-top: 5px;\" >\n" +
+        "\t\t\tmaxibandas\n" +
+        "\t\t</div>\n" +
+        "\t\t<div style=\" font-family: Arial; font-size: 12px; padding: 10px; \">\n" +
+        "\t\t\t<p style=\"font-family: Arial;font-size: 20px;font-weight: bold;width: auto;color: #DF6810;\n" +
+        "\t\t\tmargin-left: 15px;\">\n" +
+        "\t\t\t\tHola, <<--name-->> </p>\n" +
+        "\t\t\t<p>\n" +
+        "\t\t\t\tTe avisamos que tu anuncio  <a   style=\"color:#2a2a2a;\"href=\"http://www.maxibandas.com.mx\"><<--title-->></a> fue dado de baja. <br>\n" +
+        "\n" +
+        "\t\t\t\tPara renovar <a   style=\"color:#2a2a2a;\"href=\"http://www.maxibandas.com.mx\"><<--title-->></a> \n" +
+        " \n" +
+        "\t\t\t</p>\n" +
+        "\t\t </div>\n" +
+        "\t\t<div style=\"height:30px; border-top:1px solid #E4E4E4; background: #E4E4E4; text-align: center;\n" +
+        "\t\tfont-family: Arial; font-size: 10px; color:#555; \">\n" +
+        "\t\t\t<a style=\"color:#DF6810;\" href=\"\">www.maxibandas.com.mx</a> <br> Todos los derechos reservados\n" +
+        "\t\t</div>\t\t\n" +
+        "\t</div>"
+
+
+
+
 // log4j configuration
 log4j = {
     // Example of changing the log pattern for the default console appender:

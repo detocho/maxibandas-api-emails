@@ -1,8 +1,10 @@
-var express 	= require('express'),
-	misc 		= require('./routes/misc'),
-	users 		= require('./routes/users'),
-	searchUsers	= require('./routes/searchUsers'),
-   	dummy 		= require('./routes/dummy');
+var express 			= require('express'),
+	misc 				= require('./routes/misc'),
+	users 				= require('./routes/users'),
+	searchUsers			= require('./routes/searchUsers'),
+	searchUserByEmail 	= require('./routes/searchUserByEmail'),
+	bands				= require('./routes/bands'),
+   	dummy 				= require('./routes/dummy');
    	//misc = require('./routes/misc');
 
 var app = express();
@@ -20,6 +22,10 @@ app.configure('development', function () {
 app.get('/ping',misc.ping);
 app.get('/users/:userId', users.get);
 app.get('/users/search/:admin', searchUsers.get);
+
+app.get('/users/searchByEmail/:email', searchUserByEmail.get);
+
+app.get('/bands/:bandId',bands.get);
 
 
 //app.get('/catalog',catalog.get);

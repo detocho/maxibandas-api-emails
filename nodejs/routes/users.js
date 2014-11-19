@@ -6,7 +6,7 @@ exports.get = function (request, response){
     json = {
     	"id": userId,
     	"name": "Test de modificion",
-    	"email": "user5@detocho.com.mx",
+    	"email": "davidpazgtz764@gmail.com",
     	"password": "dtm123456",
     	"phone": "Casa (55) 55-2345-2534",
     	"location_id": "15",
