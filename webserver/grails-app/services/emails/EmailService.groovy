@@ -77,6 +77,7 @@ class EmailService {
 
     def searchUser (def senderId){
 
+        restService.defineServiceType('users')
         def result = restService.getResource("/users/${senderId}")
 
         if (result.status != HttpServletResponse.SC_OK)
@@ -94,6 +95,7 @@ class EmailService {
 
     def searchBand(def bandId){
 
+        restService.defineServiceType('bands')
         def result = restService.getResource("/bands/${bandId}")
 
         if (result.status != HttpServletResponse.SC_OK)
@@ -112,6 +114,7 @@ class EmailService {
 
     def searchUserByEmail (def email){
 
+        restService.defineServiceType('users')
         def result = restService.getResource("/users/searchByEmail/${email}")
 
         if (result.status != HttpServletResponse.SC_OK)

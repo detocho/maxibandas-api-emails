@@ -19,10 +19,27 @@ class RestService {
 
     //def urlBase = "http://localhost:8888/" //"https://api.mercadolibre.com/"
     def grailsApplication = new DefaultGrailsApplication()
-    def urlBase = grailsApplication.config.domainMainUsers
+    def urlBaseUsers = grailsApplication.config.domainMainUsers
+    def urlBaseBands    = grailsApplication.config.domainMainBands
 
 
-    def restClient  = new RESTClient(urlBase)
+    def restClient  = new RESTClient(urlBaseUsers)
+
+    def defineServiceType (def typeRestService){
+
+        switch (typeRestService){
+
+            case 'users':
+                restClient = new RESTClient(urlBaseUsers)
+                break
+            case 'bands':
+                restClient = new RESTClient(urlBaseBands)
+                break
+            default:
+                restClient = new RESTClient(urlBaseUsers)
+                break
+        }
+    }
 
     def getResource(def resource){
 
