@@ -56,7 +56,7 @@ class EmailService {
         }
 
 
-        def templateProcess = getTemplate(searchTemplate(template), jsonEmail, userId)
+        def templateProcess = getTemplate(searchTemplate(template), jsonEmail, userId, params.access_token)
 
 
 
@@ -75,10 +75,15 @@ class EmailService {
     }
 
 
-    def searchUser (def senderId){
+    def searchUser (def senderId, def accessToken){
+
+        def params = [
+                access_token:accessToken
+        ]
 
         restService.defineServiceType('users')
-        def result = restService.getResource("/users/${senderId}")
+
+        def result = restService.getResource("/users/${senderId}", params)
 
         if (result.status != HttpServletResponse.SC_OK)
         {
@@ -144,7 +149,7 @@ class EmailService {
 
     }
 
-    def getTemplate(def keyTemplate,  def jsonEmail, def userId){
+    def getTemplate(def keyTemplate,  def jsonEmail, def userId, def accessToken){
 
         def template = [:]
 
@@ -166,7 +171,7 @@ class EmailService {
                     throw new BadRequestException("You must provider the sender_id")
                 }
 
-                def user = searchUser(senderId)
+                def user = searchUser(senderId, accessToken)
 
                 subject = grailsApplication.config.newUser.subject
                 body    = grailsApplication.config.newUser.body

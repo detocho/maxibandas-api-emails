@@ -10,7 +10,7 @@ exports.get = function (request, response){
     	"password": "dtm123456",
     	"phone": "Casa (55) 55-2345-2534",
     	"location_id": "15",
-    	"date_of_birth": "Mar 26, 1984 12:00:00 AM",
+    	"date_of_birth": null,
     	"registration_date": "Oct 26, 2014 12:35:31 AM",
     	"date_last_update": "Oct 26, 2014 12:37:36 AM",
     	"origin": "mobile",

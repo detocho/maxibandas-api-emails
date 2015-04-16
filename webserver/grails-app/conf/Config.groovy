@@ -78,6 +78,7 @@ environments {
         domainMainUsers = 'http://localhost:8888'
         domainMainBands = 'http://localhost:8888'
 
+
     }
     production {
         grails.logging.jul.usebridge = false

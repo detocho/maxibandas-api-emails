@@ -45,7 +45,34 @@ class RestService {
 
         Map result = [:]
 
-        def resp = restClient.get(path:resource)
+        def resp = restClient.get(path:resource, requestContentType : 'application/json')
+
+        if(resp.status != HttpServletResponse.SC_OK){
+
+            if (resp.status ==  HttpServletResponse.SC_NOT_FOUND){
+
+                throw  new NotFoundException('Rest Service whit url ='+urlBase+resource+'not found')
+
+            }
+            if (resp.status ==  HttpServletResponse.SC_BAD_REQUEST){
+
+                throw  new BadRequestException('Rest Service with url='+urlBase+resource+' bad request')
+            }
+
+        }
+
+        result.status   = resp.status
+        result.data     = resp.data
+
+        result
+
+    }
+
+    def getResource(def resource, def queryParams){
+
+        Map result = [:]
+
+        def resp = restClient.get(path:resource, query:queryParams, requestContentType : 'application/json')
 
         if(resp.status != HttpServletResponse.SC_OK){
 
