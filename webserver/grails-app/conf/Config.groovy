@@ -83,8 +83,10 @@ environments {
     production {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"
-        domainMainUsers         = 'http://ec2-54-148-189-131.us-west-2.compute.amazonaws.com'
-        domainMainBands         = 'http://ec2-52-10-76-170.us-west-2.compute.amazonaws.com'
+        //domainMainUsers         = 'http://ec2-54-148-189-131.us-west-2.compute.amazonaws.com'
+        //domainMainBands         = 'http://ec2-52-10-76-170.us-west-2.compute.amazonaws.com'
+        domainMainUsers         = 'http://api.maxibanda.com.mx'
+        domainMainBands         = 'http://api.maxibanda.com.mx'
     }
 }
 
